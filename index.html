@@ -17,12 +17,12 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <style>
     .change{
-      animation: change 1s;
+      animation: change 2s;
       border-radius: 5px;
       padding: 5px;
     }
     .over{
-      animation: over 2s infinite;
+      animation: over 3s infinite;
       border-radius: 5px;
       padding: 5px;
     }
@@ -33,18 +33,26 @@
     @keyframes change
     {
       0%   {background: rgba(255, 184, 92, 0.2);}
+      15%  {background: rgba(255, 184, 92, 0.25);}
       25%  {background: rgba(255, 184, 92, 0.51);}
+      37%  {background: rgba(255, 184, 92, 0.75);}
       50%  {background: #ffb85c;}
+      63%  {background: rgba(255, 184, 92, 0.75);}
       75%  {background: rgba(255, 184, 92, 0.51);}
+      85%  {background: rgba(255, 184, 92, 0.25);}
       100% {background: rgba(255, 184, 92, 0.2);}
     }
 
     @-webkit-keyframes change /* Safari and Chrome - necessary duplicate */
     {
       0%   {background: rgba(255, 184, 92, 0.2);}
+      15%  {background: rgba(255, 184, 92, 0.25);}
       25%  {background: rgba(255, 184, 92, 0.51);}
+      37%  {background: rgba(255, 184, 92, 0.75);}
       50%  {background: #ffb85c;}
+      63%  {background: rgba(255, 184, 92, 0.75);}
       75%  {background: rgba(255, 184, 92, 0.51);}
+      85%  {background: rgba(255, 184, 92, 0.25);}
       100% {background: rgba(255, 184, 92, 0.2);}
     }
     @keyframes over
