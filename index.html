@@ -26,6 +26,12 @@
       border-radius: 5px;
       padding: 5px;
     }
+    .canclick{
+      animation: over 1s infinite;
+      border-radius: 5px;
+      padding: 5px;
+      color: white;
+    }
     .cell{
       padding: 5px;
       white-space: nowrap;
@@ -60,11 +66,20 @@
       0%   {background: rgba(255, 0, 10, 0.18);}
       50%  {background: rgba(255, 0, 10, 0.59);}
     }
-
     @-webkit-keyframes over /* Safari and Chrome - necessary duplicate */
     {
       0%   {background: rgba(255, 0, 10, 0.18);}
       50%  {background: rgba(255, 0, 10, 0.59);}
+    }
+    @keyframes canclick
+    {
+      0%   {background: rgba(12, 214, 136, 0.18);}
+      50%  {background: rgb(12, 214, 136);}
+    }
+    @-webkit-keyframes canclick /* Safari and Chrome - necessary duplicate */
+    {
+      0%   {background: rgba(12, 214, 136, 0.18);}
+      50%  {background: rgb(12, 214, 136);}
     }
   </style>
 </head>
@@ -300,6 +315,7 @@ to get the desired effect
                 var click = item.c_count;
                 var rate = view == 0 ? 0 : (click * 100 / view);
                 rate =  Math.round(rate * 100) / 100;
+                var next_rate = view == 0 ? 0 : ((click+1) * 100 / view);
                 var e_money = item.e_money;
 
                 $('#view_' + ad_key).html(view);
@@ -307,6 +323,11 @@ to get the desired effect
 
                 $('#click_' + ad_key).html(click);
                 animationChange($('#click_' + ad_key),'change',3);
+                if(view>0 && next_rate<=4){
+                    $('#click_' + ad_key).addClass('canclick');
+                }else{
+                    $('#click_' + ad_key).removeClass('canclick');
+                }
 
                 $('#rate_' + ad_key).html(rate + ' %');
                 animationChange($('#rate_' + ad_key),'change',3);
