@@ -17,12 +17,12 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <style>
     .change{
-      animation: change 2s;
+      animation: change 3s;
       border-radius: 5px;
       padding: 5px;
     }
     .over{
-      animation: over 3s infinite;
+      animation: over 1s infinite;
       border-radius: 5px;
       padding: 5px;
     }
@@ -303,20 +303,16 @@ to get the desired effect
                 var e_money = item.e_money;
 
                 $('#view_' + ad_key).html(view);
-                $('#view_' + ad_key).removeClass('change');
-                $('#view_' + ad_key).addClass('change');
+                animationChange($('#view_' + ad_key),'change',3);
 
                 $('#click_' + ad_key).html(click);
-                $('#click_' + ad_key).removeClass('change');
-                $('#click_' + ad_key).addClass('change');
+                animationChange($('#click_' + ad_key),'change',3);
 
                 $('#rate_' + ad_key).html(rate + ' %');
-                $('#rate_' + ad_key).removeClass('change');
-                $('#rate_' + ad_key).addClass('change');
+                animationChange($('#rate_' + ad_key),'change',3);
 
                 $('#money_' + ad_key).html(e_money + ' $');
-                $('#money_' + ad_key).removeClass('change');
-                $('#money_' + ad_key).addClass('change');
+                animationChange($('#money_' + ad_key),'change',3);
 
                 if(rate>=5){
                     $('#rate_' + ad_key).addClass('over');
@@ -325,6 +321,12 @@ to get the desired effect
                 }
             }
         });
+    }
+    function animationChange(element,classAnimation, duration) {
+        $(element).addClass(classAnimation);
+        setTimeout(function () {
+            $(element).removeClass(classAnimation);
+        },duration*1000);
     }
 </script>
 </body>
