@@ -276,6 +276,7 @@ to get the desired effect
         for (var phone in users){
             //console.log(phone, users[phone]);
             var user = users[phone];
+            if(user.dashboard!=true) continue;
             var html = $('#user_block').html();
             html = html.replace('{user_name}',phone + ' - ' + user.user_name);
             html = html.replace('data_body','data_body_'+phone);
@@ -291,8 +292,8 @@ to get the desired effect
                       '<td><div class="cell text-left">'+'TK '+(i+1)+'</div></td>'+
                       '<td><div class="cell text-right" id="view_'+ad_key+'">0</div></td>'+
                       '<td><div class="cell text-right" id="click_'+ad_key+'">0</div></td>'+
-                      '<td><div class="cell text-right" id="rate_'+ad_key+'">0</div></td>'+
-                      '<td><div class="cell text-right" id="money_'+ad_key+'">0</div></td>'+
+                      '<td><div class="cell text-right" id="rate_'+ad_key+'">0 %</div></td>'+
+                      '<td><div class="cell text-right" id="money_'+ad_key+'">0 $</div></td>'+
                     '</tr>');
                 dbListenerByAdKey(user.ad_keys[i].replace('/','@'));
             }
