@@ -189,11 +189,11 @@ to get the desired effect
                 <table class="table table-striped table-valign-middle">
                   <thead>
                   <tr>
-                    <th>Tên TK</th>
-                    <th class="text-right cell">Views</th>
-                    <th class="text-right cell">Click</th>
-                    <th class="text-right cell">Tỷ lệ</th>
-                    <th class="text-right cell">Thu nhập tạm tính</th>
+                    <th class="text-left cell" style="white-space: normal;">Tên TK</th>
+                    <th class="text-right cell" style="white-space: normal;">Views</th>
+                    <th class="text-right cell" style="white-space: normal;">Click</th>
+                    <th class="text-right cell" style="white-space: normal;">Tỷ lệ</th>
+                    <th class="text-right cell" style="white-space: normal;">Thu nhập tạm tính</th>
                   </tr>
                   </thead>
                   <tbody id="data_body">
@@ -288,7 +288,7 @@ to get the desired effect
                 console.info('ad_key', ad_key);
                 html = $('#row').html();
                 $('#data_body_'+phone).append('<tr>' +
-                      '<td>'+'TK '+(i+1)+'</td>'+
+                      '<td><div class="cell text-left">'+'TK '+(i+1)+'</div></td>'+
                       '<td><div class="cell text-right" id="view_'+ad_key+'">0</div></td>'+
                       '<td><div class="cell text-right" id="click_'+ad_key+'">0</div></td>'+
                       '<td><div class="cell text-right" id="rate_'+ad_key+'">0</div></td>'+
