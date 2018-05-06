@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-  <title>Admob Report | Dashboard</title>
+  <title>Admob Report | Update</title>
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="plugins/font-awesome/css/font-awesome.min.css">
@@ -139,11 +139,19 @@ to get the desired effect
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item has-treeview menu-open">
-            <a href="./index.html" class="nav-link active">
+          <li class="nav-item">
+            <a href="./index.html" class="nav-link">
               <i class="nav-icon fa fa-dashboard"></i>
               <p>
                 Dashboard
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="./update.html" class="nav-link active">
+              <i class="nav-icon fa fa-edit"></i>
+              <p>
+                Update
               </p>
             </a>
           </li>
@@ -169,12 +177,12 @@ to get the desired effect
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Dashboard</h1>
+            <h1 class="m-0 text-dark">Cập nhật dữ liệu</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="./index.html">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard</li>
+              <li class="breadcrumb-item active">Update</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -185,47 +193,46 @@ to get the desired effect
     <!-- Main content -->
     <div class="content">
       <div class="container-fluid">
-        <div style="display: none;" class="row">
-          <div class="col-lg-12" id="user_block">
-            <div class="card">
-              <div class="card-header no-border">
-                <h3 class="card-title cell">{user_name}</h3>
+        <div class="row">
+          <div class="col-lg-12">
+              <div class="card card-success">
+                <div class="card-header">
+                  <h3 class="card-title">Update</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <form role="form">
+                    <!-- text input -->
+                    <div class="form-group">
+                      <label>Date: </label>
+
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fa fa-calendar"></i>
+                      </span>
+                        </div>
+                        <input type="text" class="form-control" id="date">
+                      </div>
+                      <!-- /.input group -->
+                    </div>
+                    <!-- textarea -->
+                    <div class="form-group">
+                      <label>Data: </label>
+                      <textarea class="form-control" rows="12" id="data"></textarea>
+                    </div>
+
+                  </form>
+                </div>
+                <!-- /.card-body -->
+                <div class="card-footer">
+                  <button type="button" class="btn btn-block btn-success btn-lg" onclick="save();">Save</button>
+                </div>
               </div>
-              <div class="card-body p-0">
-                <table class="table table-striped table-valign-middle">
-                  <thead>
-                  <tr>
-                    <th class="text-left cell" style="white-space: normal;">Tên TK</th>
-                    <th class="text-right cell" style="white-space: normal;">Views</th>
-                    <th class="text-right cell" style="white-space: normal;">Click</th>
-                    <th class="text-right cell" style="white-space: normal;">Tỷ lệ</th>
-                    <th class="text-right cell" style="white-space: normal;">Thu nhập tạm tính</th>
-                  </tr>
-                  </thead>
-                  <tbody id="data_body">
-                  <tr id="row">
-                    <td>
-                      {acc_name}
-                    </td>
-                    <td>{views}</td>
-                    <td>{clicks}</td>
-                    <td>{rate}</td>
-                    <td>{e_money}</td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
             <!-- /.card -->
           </div>
           <!-- /.col-md-6 -->
         </div>
-        <!-- /.row --><div class="row">
-        <div class="col-lg-12" id="users_block">
-
-        </div>
-        <!-- /.col-md-6 -->
-      </div>
         <!-- /.row -->
       </div>
       <!-- /.container-fluid -->
@@ -263,6 +270,8 @@ to get the desired effect
 <script src="https://momentjs.com/downloads/moment-with-locales.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
 <script>
+    //$('#date').inputmask('dd/mm/yyyy', { 'placeholder': 'dd/mm/yyyy' });
+    $('#date').val(moment().format('YYYY-MM-DD'));
     // Initialize Firebase
     var config = {
         apiKey: "AIzaSyAEHoS6XDZuT6LS5ERaWvCwnN86FlpWz-o",
@@ -273,88 +282,36 @@ to get the desired effect
         messagingSenderId: "563960745234"
     };
     firebase.initializeApp(config);
-    var db = firebase.database().ref('users');
-    db.on('value', function(snapshot) {
-        //console.log('snapshot',snapshot.val());
-        var users = snapshot.val();
-        console.log('Object.keys(users) = ',Object.keys(users));
-        $('#users_block').html('');
-        for (var phone in users){
-            //console.log(phone, users[phone]);
-            var user = users[phone];
-            if(user.dashboard!=true) continue;
-            var html = $('#user_block').html();
-            html = html.replace('{user_name}',phone + ' - ' + user.user_name);
-            html = html.replace('data_body','data_body_'+phone);
-            $('#users_block').html($('#users_block').html() + html);
-            $('#data_body_'+phone).html('');
-            var i = 1;
-            console.info('ad_keys', user.ad_keys);
-            for(var i=0; i< user.ad_keys.length; i++){
-                var ad_key = user.ad_keys[i].replace('/','_');
-                console.info('ad_key', ad_key);
-                html = $('#row').html();
-                $('#data_body_'+phone).append('<tr>' +
-                      '<td><div class="cell text-left">'+'TK '+(i+1)+'</div></td>'+
-                      '<td><div class="cell text-right" id="view_'+ad_key+'">0</div></td>'+
-                      '<td><div class="cell text-right" id="click_'+ad_key+'">0</div></td>'+
-                      '<td><div class="cell text-right" id="rate_'+ad_key+'">0 %</div></td>'+
-                      '<td><div class="cell text-right" id="money_'+ad_key+'">0 $</div></td>'+
-                    '</tr>');
-                dbListenerByAdKey(user.ad_keys[i].replace('/','@'));
+
+    function save() {
+        var text = $('#data').val();
+        var lines = text.split('\n');
+        console.log('lines',lines);
+        for(var i=0; i<=lines.length; i++){
+            if(lines[i]!=null && lines[i].indexOf('ca-app-pub')>=0){
+                var key = lines[i].split(' ')[1];
+                var view = parseInt(lines[i+1]);
+                var click = parseInt(lines[i+2]);
+                var money = parseFloat(lines[i+4].replace(' $','').split('.').join('').replace(',','.'));
+                console.log('key = ',key);
+                console.log('view = ',view);
+                console.log('click = ',click);
+                console.log('money = ',money);
+                var date = $('#date').val().trim();
+                if(key!=null && view!=null && click!=null && money!=null){
+                    var statistic = {
+                        c_count: click,
+                        v_count: view,
+                        e_money: money
+                    };
+                    console.log('statistic',statistic);
+                    var db = firebase.database().ref('statistical/'+key.replace('/','@')+'/'+date)
+                        .set(statistic);
+                    console.log('path','statistical/'+key.replace('/','@')+'/'+date);
+                }
             }
         }
-    });
-    function dbListenerByAdKey(ad_key) {
-        ad_key = ad_key.replace('/','@');
-        var today = moment().format('YYYY-MM-DD');
-        var db = firebase.database().ref('statistical/'+ad_key+'/'+today);
-        db.on('value', function(snapshot) {
-            var ad_key = snapshot.ref.parent.key;
-            console.log('ad_key',ad_key);
-            console.log('date',snapshot.key);
-            console.log('snapshot.exists()',snapshot.exists());
-            ad_key = ad_key.replace('@','_');
-            var item = snapshot.val();
-            console.log('item',item);
-            if(item) {
-                var view = item.v_count;
-                var click = item.c_count;
-                var rate = view == 0 ? 0 : (click * 100 / view);
-                rate =  Math.round(rate * 100) / 100;
-                var next_rate = view == 0 ? 0 : ((click+1) * 100 / view);
-                var e_money = item.e_money;
-
-                $('#view_' + ad_key).html(view);
-                animationChange($('#view_' + ad_key),'change',3);
-
-                $('#click_' + ad_key).html(click);
-                animationChange($('#click_' + ad_key),'change',3);
-                if(view>0 && next_rate<=4){
-                    $('#click_' + ad_key).addClass('canclick');
-                }else{
-                    $('#click_' + ad_key).removeClass('canclick');
-                }
-
-                $('#rate_' + ad_key).html(rate + ' %');
-                animationChange($('#rate_' + ad_key),'change',3);
-
-                $('#money_' + ad_key).html(e_money + ' $');
-                animationChange($('#money_' + ad_key),'change',3);
-
-                if(rate>=5){
-                    $('#rate_' + ad_key).addClass('over');
-                }else{
-                    $('#rate_' + ad_key).removeClass('over');
-                }
-            }
-        });
-    }
-    function animationChange(element,classAnimation, duration) {
-        $(element).addClass(classAnimation);
-        setTimeout(function () {
-            $(element).removeClass(classAnimation);
-        },duration*1000);
+        alert('Đã cập nhật xong.')
     }
 </script>
 </body>
