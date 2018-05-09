@@ -198,17 +198,17 @@ to get the desired effect
                     <th class="text-left cell" style="white-space: normal;">Tên TK</th>
                     <th class="text-right cell" style="white-space: normal;">Views</th>
                     <th class="text-right cell" style="white-space: normal;">Click</th>
+                    <th class="text-right cell" style="white-space: normal;">Click sai</th>
                     <th class="text-right cell" style="white-space: normal;">Tỷ lệ</th>
-                    <th class="text-right cell" style="white-space: normal;">Thu nhập tạm tính</th>
+                    <th class="text-right cell" style="white-space: normal;">Thu nhập ước tính</th>
                   </tr>
                   </thead>
                   <tbody id="data_body">
                   <tr id="row">
-                    <td>
-                      {acc_name}
-                    </td>
+                    <td>{acc_name}</td>
                     <td>{views}</td>
                     <td>{clicks}</td>
+                    <td style="color: red;font-weight: bold;">{bad_clicks}</td>
                     <td>{rate}</td>
                     <td>{e_money}</td>
                   </tr>
@@ -297,7 +297,8 @@ to get the desired effect
                 $('#data_body_'+phone).append('<tr>' +
                       '<td><div class="cell text-left">'+'TK '+(i+1)+'</div></td>'+
                       '<td><div class="cell text-right" id="view_'+ad_key+'">0</div></td>'+
-                      '<td><div class="cell text-right" id="click_'+ad_key+'">0</div></td>'+
+                    '<td><div class="cell text-right" id="click_'+ad_key+'">0</div></td>'+
+                    '<td><div class="cell text-right" id="bad_click_'+ad_key+'" style="color: red;font-weight: bold;">0</div></td>'+
                       '<td><div class="cell text-right" id="rate_'+ad_key+'">0 %</div></td>'+
                       '<td><div class="cell text-right" id="money_'+ad_key+'">0 $</div></td>'+
                     '</tr>');
@@ -318,12 +319,13 @@ to get the desired effect
             var item = snapshot.val();
             console.log('item',item);
             if(item) {
-                var view = item.v_count;
-                var click = item.c_count;
+                var view = item.v_count == null ? 0 : item.v_count;
+                var click = item.c_count == null ? 0 : item.c_count;
+                var bad_click = item.bc_count == null ? 0 : item.bc_count;
                 var rate = view == 0 ? 0 : (click * 100 / view);
                 rate =  Math.round(rate * 100) / 100;
                 var next_rate = view == 0 ? 0 : ((click+1) * 100 / view);
-                var e_money = item.e_money;
+                var e_money = item.e_money == null ? 0 : item.e_money;
 
                 $('#view_' + ad_key).html(view);
                 animationChange($('#view_' + ad_key),'change',3);
@@ -335,6 +337,9 @@ to get the desired effect
                 }else{
                     $('#click_' + ad_key).removeClass('canclick');
                 }
+
+                $('#bad_click_' + ad_key).html(bad_click);
+                animationChange($('#bad_click_' + ad_key),'change',3);
 
                 $('#rate_' + ad_key).html(rate + ' %');
                 animationChange($('#rate_' + ad_key),'change',3);
