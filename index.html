@@ -394,7 +394,10 @@ to get the desired effect
             console.log('total',total);
         }
         console.log('tager',$($('.total_'+class_name,$(parent).parent())[0]));
-        $($('.total_'+class_name,$(parent).parent())[0]).html(total);
+        if(class_name == 'money')
+            $($('.total_'+class_name,$(parent).parent())[0]).html(total+' $');
+        else
+            $($('.total_'+class_name,$(parent).parent())[0]).html(total);
     }
     function animationChange(element,classAnimation, duration) {
         $(element).addClass(classAnimation);
