@@ -194,7 +194,7 @@ to get the desired effect
               <div class="card-body p-0">
                 <table class="table table-striped table-valign-middle">
                   <thead>
-                  <tr>
+                  <tr class="bg-primary-gradient">
                     <th class="text-left cell" style="white-space: normal;">Tên TK</th>
                     <th class="text-right cell" style="white-space: normal;">Views</th>
                     <th class="text-right cell" style="white-space: normal;">Click</th>
@@ -208,11 +208,21 @@ to get the desired effect
                     <td>{acc_name}</td>
                     <td>{views}</td>
                     <td>{clicks}</td>
-                    <td style="color: red;font-weight: bold;">{bad_clicks}</td>
+                    <td>{bad_clicks}</td>
                     <td>{rate}</td>
                     <td>{e_money}</td>
                   </tr>
                   </tbody>
+                  <thead>
+                  <tr class="bg-success-gradient">
+                    <th class="text-left cell" style="white-space: normal;">Tổng cộng: </th>
+                    <th class="total_view text-right cell" style="white-space: normal;">0</th>
+                    <th class="total_click text-right cell" style="white-space: normal;">0</th>
+                    <th class="total_bad_click text-right cell" style="white-space: normal;">0</th>
+                    <th class="text-right cell" style="white-space: normal;"></th>
+                    <th class="total_money text-right cell" style="white-space: normal;">0 $</th>
+                  </tr>
+                  </thead>
                 </table>
               </div>
             </div>
@@ -286,6 +296,7 @@ to get the desired effect
             var html = $('#user_block').html();
             html = html.replace('{user_name}',phone + ' - ' + user.user_name);
             html = html.replace('data_body','data_body_'+phone);
+
             $('#users_block').html($('#users_block').html() + html);
             $('#data_body_'+phone).html('');
             var i = 1;
@@ -296,11 +307,11 @@ to get the desired effect
                 html = $('#row').html();
                 $('#data_body_'+phone).append('<tr>' +
                       '<td><div class="cell text-left">'+'TK '+(i+1)+'</div></td>'+
-                      '<td><div class="cell text-right" id="view_'+ad_key+'">0</div></td>'+
-                    '<td><div class="cell text-right" id="click_'+ad_key+'">0</div></td>'+
-                    '<td><div class="cell text-right" id="bad_click_'+ad_key+'" style="color: red;font-weight: bold;">0</div></td>'+
+                      '<td><div class="view cell text-right" id="view_'+ad_key+'">0</div></td>'+
+                      '<td><div class="click cell text-right" id="click_'+ad_key+'">0</div></td>'+
+                      '<td><div class="bad_click cell text-right" id="bad_click_'+ad_key+'">0</div></td>'+
                       '<td><div class="cell text-right" id="rate_'+ad_key+'">0 %</div></td>'+
-                      '<td><div class="cell text-right" id="money_'+ad_key+'">0 $</div></td>'+
+                      '<td><div class="money cell text-right" id="money_'+ad_key+'">0 $</div></td>'+
                     '</tr>');
                 dbListenerByAdKey(user.ad_keys[i].replace('/','@'));
             }
@@ -339,6 +350,12 @@ to get the desired effect
                 }
 
                 $('#bad_click_' + ad_key).html(bad_click);
+                if(bad_click>0){
+                    $('#bad_click_' + ad_key).addClass("text-bold text-danger");
+                }
+                else {
+                    $('#bad_click_' + ad_key).removeClass("text-bold text-danger");
+                }
                 animationChange($('#bad_click_' + ad_key),'change',3);
 
                 $('#rate_' + ad_key).html(rate + ' %');
@@ -352,8 +369,32 @@ to get the desired effect
                 }else{
                     $('#rate_' + ad_key).removeClass('over');
                 }
+                calcTotal('#view_' + ad_key);
             }
         });
+    }
+    function calcTotal(node) {
+        var parent = $(node).parent().parent().parent();
+        if(parent!=null){
+            calcTotalByClass('view',parent);
+            calcTotalByClass('click',parent);
+            calcTotalByClass('bad_click',parent);
+            calcTotalByClass('money',parent);
+        }
+    }
+    function calcTotalByClass(class_name,parent) {
+        var nodes = $('.'+class_name,$(parent));
+        console.log('nodes = ',nodes);
+        var total=0.0;
+        for (var i=0; i <= nodes.length; i++){
+            var value = parseFloat( $(nodes[i]).text()==null?0:$(nodes[i]).text());
+            console.log(class_name,value);
+            if(!isNaN(value))
+              total += value;
+            console.log('total',total);
+        }
+        console.log('tager',$($('.total_'+class_name,$(parent).parent())[0]));
+        $($('.total_'+class_name,$(parent).parent())[0]).html(total);
     }
     function animationChange(element,classAnimation, duration) {
         $(element).addClass(classAnimation);
