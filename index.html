@@ -201,6 +201,7 @@ to get the desired effect
                     <th class="text-right cell" style="white-space: normal;">Click sai</th>
                     <th class="text-right cell" style="white-space: normal;">Tỷ lệ</th>
                     <th class="text-right cell" style="white-space: normal;">Thu nhập ước tính</th>
+                    <th class="text-right cell" style="white-space: normal;">Thời gian cập nhật</th>
                   </tr>
                   </thead>
                   <tbody id="data_body">
@@ -211,6 +212,7 @@ to get the desired effect
                     <td>{bad_clicks}</td>
                     <td>{rate}</td>
                     <td>{e_money}</td>
+                    <td>{last_update}</td>
                   </tr>
                   </tbody>
                   <thead>
@@ -221,6 +223,7 @@ to get the desired effect
                     <th class="total_bad_click text-right cell" style="white-space: normal;">0</th>
                     <th class="text-right cell" style="white-space: normal;"></th>
                     <th class="total_money text-right cell" style="white-space: normal;">0 $</th>
+                    <th class="text-right cell" style="white-space: normal;"></th>
                   </tr>
                   </thead>
                 </table>
@@ -312,6 +315,7 @@ to get the desired effect
                       '<td><div class="bad_click cell text-right" id="bad_click_'+ad_key+'">0</div></td>'+
                       '<td><div class="cell text-right" id="rate_'+ad_key+'">0 %</div></td>'+
                       '<td><div class="money cell text-right" id="money_'+ad_key+'">0 $</div></td>'+
+                      '<td><div class="click cell text-right" id="last_update_at_'+ad_key+'"></div></td>'+
                     '</tr>');
                 dbListenerByAdKey(user.ad_keys[i].replace('/','@'));
             }
@@ -337,6 +341,7 @@ to get the desired effect
                 rate =  Math.round(rate * 100) / 100;
                 var next_rate = view == 0 ? 0 : ((click+1) * 100 / view);
                 var e_money = item.e_money == null ? 0 : item.e_money;
+                var last_update_at = item.last_update_at == null ? '' : item.last_update_at;
 
                 $('#view_' + ad_key).html(view);
                 animationChange($('#view_' + ad_key),'change',3);
@@ -363,6 +368,9 @@ to get the desired effect
 
                 $('#money_' + ad_key).html(e_money + ' $');
                 animationChange($('#money_' + ad_key),'change',3);
+
+                $('#last_update_at_' + ad_key).html(last_update_at);
+                animationChange($('#last_update_at_' + ad_key),'change',3);
 
                 if(rate>=5){
                     $('#rate_' + ad_key).addClass('over');
