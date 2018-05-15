@@ -169,7 +169,17 @@ to get the desired effect
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Dashboard</h1>
+            <h1 class="m-0 text-dark">
+              Dashboard
+              <form action="index.html">
+                <div class="input-group input-group-sm">
+                  <input type="date" id="date" name="date" class="form-control" style="width: 150px !important;"/>
+                  <span class="input-group-btn">
+                      <button type="submit" class="btn btn-info btn-flat">Go!</button>
+                    </span>
+                </div>
+              </form>
+            </h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -276,6 +286,11 @@ to get the desired effect
 <script src="https://momentjs.com/downloads/moment-with-locales.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
 <script>
+    var date = getUrlParameter('date');
+    if(date==null || date==''){
+        date = moment().format('YYYY-MM-DD');
+    }
+    $('#date').val(date);
     // Initialize Firebase
     var config = {
         apiKey: "AIzaSyAEHoS6XDZuT6LS5ERaWvCwnN86FlpWz-o",
@@ -323,8 +338,8 @@ to get the desired effect
     });
     function dbListenerByAdKey(ad_key) {
         ad_key = ad_key.replace('/','@');
-        var today = moment().format('YYYY-MM-DD');
-        var db = firebase.database().ref('statistical/'+ad_key+'/'+today);
+        var date = $('#date').val();
+        var db = firebase.database().ref('statistical/'+ad_key+'/'+date);
         db.on('value', function(snapshot) {
             var ad_key = snapshot.ref.parent.key;
             console.log('ad_key',ad_key);
@@ -412,6 +427,20 @@ to get the desired effect
         setTimeout(function () {
             $(element).removeClass(classAnimation);
         },duration*1000);
+    }
+    function getUrlParameter(sParam) {
+        var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : sParameterName[1];
+            }
+        }
     }
 </script>
 </body>
